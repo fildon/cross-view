@@ -1,5 +1,5 @@
 import {
-	BoxGeometry,
+	IcosahedronGeometry,
 	Mesh,
 	MeshStandardMaterial,
 	PerspectiveCamera,
@@ -69,10 +69,10 @@ window.addEventListener<"resize">(
 	})(),
 );
 
-const geometry = new BoxGeometry(1, 1, 1);
+const geometry = new IcosahedronGeometry();
 const material = new MeshStandardMaterial({ color: 0xffffff });
-const cube = new Mesh(geometry, material);
-scene.add(cube);
+const icosahedron = new Mesh(geometry, material);
+scene.add(icosahedron);
 
 const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0x00ffff, 0xff00ff];
 const lights = colors.map((color) => new Light({ color, scene }));
@@ -82,8 +82,8 @@ const animate = (timestamp: number) => {
 
 	// We use PI just as a generic irrational number
 	// So that X and Y rotations have no common multiple
-	cube.rotation.x = t * 0.2 * Math.PI;
-	cube.rotation.y = t;
+	icosahedron.rotation.x = t * 0.2 * Math.PI;
+	icosahedron.rotation.y = t;
 
 	lights.forEach((light) => light.update(timestamp));
 
@@ -91,5 +91,38 @@ const animate = (timestamp: number) => {
 	rightRenderer.render(scene, rightCamera);
 	requestAnimationFrame(animate);
 };
+
+const settingsDialog = document.getElementById("settings") as HTMLDialogElement;
+document
+	.getElementById("settings-open")
+	?.addEventListener("click", () => settingsDialog.showModal());
+document
+	.getElementById("settings-close")
+	?.addEventListener("click", () => settingsDialog.close());
+
+const eyeOffsetInput = document.getElementById(
+	"eye-offset",
+) as HTMLInputElement;
+eyeOffsetInput.value = "5";
+eyeOffsetInput.addEventListener("input", () => {
+	const uiValue = parseInt(eyeOffsetInput.value);
+	const inUniverseValue = uiValue / 20;
+	leftCamera.position.x = inUniverseValue;
+	leftCamera.lookAt(scene.position);
+	rightCamera.position.x = -inUniverseValue;
+	rightCamera.lookAt(scene.position);
+});
+const cameraDistanceInput = document.getElementById(
+	"camera-distance",
+) as HTMLInputElement;
+cameraDistanceInput.value = "5";
+cameraDistanceInput.addEventListener("input", () => {
+	const uiValue = parseInt(cameraDistanceInput.value);
+	const inUniverseValue = 2 + uiValue;
+	leftCamera.position.z = inUniverseValue;
+	leftCamera.lookAt(scene.position);
+	rightCamera.position.z = inUniverseValue;
+	rightCamera.lookAt(scene.position);
+});
 
 animate(performance.now());

@@ -12,9 +12,84 @@
 			canvas {
 				display: inline-block;
 			}
+			dialog {
+				border-radius: 1rem;
+				.settings-container {
+					display: flex;
+					flex-direction: column;
+					max-width: 60ch;
+					gap: 1rem;
+					.settings-row {
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+					}
+					label {
+						font-weight: bold;
+					}
+					datalist {
+						display: flex;
+						justify-content: space-between;
+					}
+				}
+			}
+			#settings-open {
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				padding: 1rem;
+			}
+			#settings {
+				position: absolute;
+				bottom: 1rem;
+			}
 		</style>
 	</head>
 	<body>
+		<dialog id="settings">
+			<div class="settings-container">
+				<div class="settings-row" style="flex-direction: column">
+					<label for="eye-offset">Eye Offset</label>
+					<p>
+						Distance between cameras in world space. Positive values correspond
+						to cross-eye. Negative values correspond to wall-eye.
+					</p>
+					<p>
+						Higher absolute values accentuate the depth illusion. Lower absolute
+						values are easier to focus on.
+					</p>
+					<input
+						type="range"
+						id="eye-offset"
+						name="eye-offset"
+						list="markers"
+						min="-10"
+						max="10"
+					/>
+					<datalist id="markers">
+						<option value="-10" label="-10"></option>
+						<option value="-5" label="-5"></option>
+						<option value="0" label="+0"></option>
+						<option value="5" label="+5"></option>
+						<option value="10" label="+10"></option>
+					</datalist>
+				</div>
+				<hr style="width: 100%" />
+				<div class="settings-row" style="flex-direction: column">
+					<label for="camera-distance">Camera Distance</label>
+					<p>Distance from the camera to the cube</p>
+					<input
+						type="range"
+						id="camera-distance"
+						name="camera-distance"
+						min="1"
+						max="10"
+					/>
+				</div>
+				<button id="settings-close">Close</button>
+			</div>
+		</dialog>
+		<button id="settings-open">Settings</button>
 		<script type="module" src="/index.ts"></script>
 	</body>
 </html>
