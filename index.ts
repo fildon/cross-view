@@ -1,9 +1,13 @@
 import {
 	IcosahedronGeometry,
 	Mesh,
+	MeshBasicMaterial,
 	MeshStandardMaterial,
+	NearestFilter,
 	PerspectiveCamera,
+	PlaneGeometry,
 	Scene,
+	TextureLoader,
 	WebGLRenderer,
 } from "three";
 import { Light } from "./src/light";
@@ -25,7 +29,7 @@ const leftCamera = new PerspectiveCamera(
 	1000,
 );
 leftCamera.position.x = 0.1;
-leftCamera.position.z = 5;
+leftCamera.position.z = 10;
 leftCamera.lookAt(scene.position);
 
 const rightCamera = new PerspectiveCamera(
@@ -35,7 +39,7 @@ const rightCamera = new PerspectiveCamera(
 	1000,
 );
 rightCamera.position.x = -0.1;
-rightCamera.position.z = 5;
+rightCamera.position.z = 10;
 rightCamera.lookAt(scene.position);
 
 window.addEventListener<"resize">(
@@ -68,6 +72,20 @@ window.addEventListener<"resize">(
 		};
 	})(),
 );
+
+const backgroundTexture = new TextureLoader().load(
+	// A 2x2 black and white checker grid texture.
+	"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAABlBMVEUAAAD///+l2Z/dAAAADElEQVR4nGNwYGgAAAFEAME6ehxWAAAAAElFTkSuQmCC",
+);
+backgroundTexture.magFilter = NearestFilter;
+const backdropPlane = new Mesh(
+	new PlaneGeometry(10000, 10000),
+	new MeshBasicMaterial({
+		map: backgroundTexture,
+	}),
+);
+backdropPlane.position.z = -5;
+scene.add(backdropPlane);
 
 const geometry = new IcosahedronGeometry();
 const material = new MeshStandardMaterial({ color: 0xffffff });
@@ -106,7 +124,7 @@ const eyeOffsetInput = document.getElementById(
 eyeOffsetInput.value = "5";
 eyeOffsetInput.addEventListener("input", () => {
 	const uiValue = parseInt(eyeOffsetInput.value);
-	const inUniverseValue = uiValue / 10;
+	const inUniverseValue = uiValue / 20;
 	leftCamera.position.x = inUniverseValue;
 	leftCamera.lookAt(scene.position);
 	rightCamera.position.x = -inUniverseValue;
@@ -118,7 +136,7 @@ const cameraDistanceInput = document.getElementById(
 cameraDistanceInput.value = "5";
 cameraDistanceInput.addEventListener("input", () => {
 	const uiValue = parseInt(cameraDistanceInput.value);
-	const inUniverseValue = 2 + uiValue;
+	const inUniverseValue = 5 + uiValue;
 	leftCamera.position.z = inUniverseValue;
 	leftCamera.lookAt(scene.position);
 	rightCamera.position.z = inUniverseValue;
