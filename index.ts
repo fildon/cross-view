@@ -106,7 +106,7 @@ const eyeOffsetInput = document.getElementById(
 eyeOffsetInput.value = "5";
 eyeOffsetInput.addEventListener("input", () => {
 	const uiValue = parseInt(eyeOffsetInput.value);
-	const inUniverseValue = uiValue / 20;
+	const inUniverseValue = uiValue / 10;
 	leftCamera.position.x = inUniverseValue;
 	leftCamera.lookAt(scene.position);
 	rightCamera.position.x = -inUniverseValue;
