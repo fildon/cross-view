@@ -14,6 +14,8 @@
 			}
 			dialog {
 				border-radius: 1rem;
+				opacity: 0.8;
+				margin-bottom: 0;
 				.settings-container {
 					display: flex;
 					flex-direction: column;
@@ -39,12 +41,8 @@
 				right: 0;
 				padding: 1rem;
 			}
-			#settings {
-				position: absolute;
-				bottom: 1rem;
-			}
 		</style>
-		<script type="module" crossorigin src="/cross-view/assets/index-CeKFQorw.js"></script>
+		<script type="module" crossorigin src="/cross-view/assets/index-8nB0S8x4.js"></script>
 	</head>
 	<body>
 		<dialog id="settings">
@@ -52,14 +50,11 @@
 				<div class="settings-row" style="flex-direction: column">
 					<label for="eye-offset">Eye Offset</label>
 					<p>
-						Distance between cameras in world space. Positive values correspond
-						to cross-eye. Negative values correspond to wall-eye.
-					</p>
-					<p>
-						Higher absolute values accentuate the depth illusion. Lower absolute
-						values are easier to focus on.
+						Distance between cameras in world space. Positive values for
+						cross-eye. Negative values for wall-eye.
 					</p>
 					<input
+						autofocus
 						type="range"
 						id="eye-offset"
 						name="eye-offset"
